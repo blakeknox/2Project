@@ -155,7 +155,7 @@ namespace _2Project
                     cmdSQL = new SqlCommand();
                     cmdSQL.Connection = cnSQL;
                     cmdSQL.CommandType = CommandType.StoredProcedure;
-                    cmdSQL.CommandText = "GetEmployeeByID";
+                    cmdSQL.CommandText = "GetPayrollByEmployee";
 
                     cmdSQL.Parameters.Add(new SqlParameter("@EmpID", SqlDbType.Int));
                     cmdSQL.Parameters["@EmpID"].Direction = ParameterDirection.Input;
