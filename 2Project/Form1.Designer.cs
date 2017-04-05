@@ -63,6 +63,7 @@
             this.btnAddPayroll.TabIndex = 2;
             this.btnAddPayroll.Text = "Add Payroll Data";
             this.btnAddPayroll.UseVisualStyleBackColor = true;
+            this.btnAddPayroll.Click += new System.EventHandler(this.btnAddPayroll_Click);
             // 
             // btnExit
             // 

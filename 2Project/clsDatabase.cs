@@ -195,6 +195,139 @@ namespace _2Project
                 return dsSQL;
             }
         }
+        public static DataSet GetEmployeeNames()
+        {
+            SqlConnection cnSQL;
+            SqlCommand cmdSQL;
+            SqlDataAdapter daSQL;
+            DataSet dsSQL = null;
+            Boolean blnErrorOccurred = false;
+
+            cnSQL = AcquireConnection();
+            if (cnSQL == null)
+            {
+                blnErrorOccurred = true;
+            }
+            else
+            {
+                //** Build command to execute stored procedure
+                cmdSQL = new SqlCommand();
+                cmdSQL.Connection = cnSQL;
+                cmdSQL.CommandType = CommandType.StoredProcedure;
+                cmdSQL.CommandText = "GetEmployeeNames";
+
+                cmdSQL.Parameters.Add(new SqlParameter("@ErrCode", SqlDbType.Int));
+                cmdSQL.Parameters["@ErrCode"].Direction = ParameterDirection.ReturnValue;
+
+                dsSQL = new DataSet();
+
+                try
+                {
+                    daSQL = new SqlDataAdapter(cmdSQL);
+                    daSQL.Fill(dsSQL);
+                    daSQL.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    blnErrorOccurred = true;
+                    dsSQL.Dispose();
+                }
+                finally
+                {
+                    cmdSQL.Parameters.Clear();
+                    cmdSQL.Dispose();
+                    cnSQL.Close();
+                    cnSQL.Dispose();
+                }
+            }
+
+            if (blnErrorOccurred)
+            {
+                return null;
+            }
+            else
+            {
+                return dsSQL;
+            }
+        }
+
+        public static Decimal GetEmployeePayrate(Int32 intEmpID)
+        {
+            SqlConnection cnSQL;
+            SqlCommand cmdSQL;
+            Boolean blnErrorOccurred = false;
+            Decimal decPay = 0m;
+            Int32 intRetCode;
+
+            //Verify parameter exists
+            if (intEmpID < 1)
+            {
+                blnErrorOccurred = true;
+            }
+            else
+            {
+                cnSQL = AcquireConnection();
+                if (cnSQL == null)
+                {
+                    blnErrorOccurred = true;
+                }
+                else
+                {
+                    //** Build command to execute stored procedure
+                    cmdSQL = new SqlCommand();
+                    cmdSQL.Connection = cnSQL;
+                    cmdSQL.CommandType = CommandType.StoredProcedure;
+                    cmdSQL.CommandText = "GetPayrateByID";
+
+                    cmdSQL.Parameters.Add(new SqlParameter("@EmpID", SqlDbType.Int));
+                    cmdSQL.Parameters["@EmpID"].Direction = ParameterDirection.Input;
+                    cmdSQL.Parameters["@EmpID"].Value = intEmpID;
+
+                    cmdSQL.Parameters.Add(new SqlParameter("@Payrate", SqlDbType.SmallMoney));
+                    cmdSQL.Parameters["@Payrate"].Direction = ParameterDirection.Output;
+
+                    cmdSQL.Parameters.Add(new SqlParameter("@ErrCode", SqlDbType.Int));
+                    cmdSQL.Parameters["@ErrCode"].Direction = ParameterDirection.ReturnValue;
+
+                    try
+                    {
+                        intRetCode = cmdSQL.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        blnErrorOccurred = true;
+                    }
+                    finally
+                    {
+                        cnSQL.Close();
+                        cnSQL.Dispose();
+                    }
+
+                    if (!blnErrorOccurred)
+                    {
+                        if (cmdSQL.Parameters["@Payrate"].Value == DBNull.Value)
+                        {
+                            blnErrorOccurred = true;
+                        }
+                        else
+                        {
+                            decPay = Convert.ToDecimal(cmdSQL.Parameters["@Payrate"].Value);
+                        }
+                    }
+                    cmdSQL.Parameters.Clear();
+                    cmdSQL.Dispose();
+                }
+            }
+            if (blnErrorOccurred)
+            {
+                return -1.0m;
+            }
+            else
+            {
+                return decPay;
+            }
+        }
+
     }
 
 }

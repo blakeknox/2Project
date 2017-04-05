@@ -21,7 +21,7 @@ namespace _2Project
         private void Form1_Load(object sender, EventArgs e)
         {
             lblError.Text = "";
-            btnAddPayroll.Enabled = false;
+            btnAddPayroll.Enabled = true;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -51,6 +51,12 @@ namespace _2Project
         {
             EmployeeData EmpData = new EmployeeData();
             EmpData.ShowDialog();
+        }
+
+        private void btnAddPayroll_Click(object sender, EventArgs e)
+        {
+            NewPayrollData PayData = new NewPayrollData();
+            PayData.ShowDialog();
         }
     }
 }
