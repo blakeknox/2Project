@@ -35,13 +35,15 @@
             this.lblWeek = new System.Windows.Forms.Label();
             this.txtWeekEnding = new System.Windows.Forms.TextBox();
             this.lblHours = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtHoursWorked = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnCommit = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
+            this.pdlgData = new System.Windows.Forms.PrintDialog();
+            this.pdPrint = new System.Drawing.Printing.PrintDocument();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmpData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,12 +109,12 @@
             this.lblHours.TabIndex = 6;
             this.lblHours.Text = "Hours Worked";
             // 
-            // textBox1
+            // txtHoursWorked
             // 
-            this.textBox1.Location = new System.Drawing.Point(422, 156);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 22);
-            this.textBox1.TabIndex = 7;
+            this.txtHoursWorked.Location = new System.Drawing.Point(422, 156);
+            this.txtHoursWorked.Name = "txtHoursWorked";
+            this.txtHoursWorked.Size = new System.Drawing.Size(100, 22);
+            this.txtHoursWorked.TabIndex = 7;
             // 
             // btnAdd
             // 
@@ -122,6 +124,7 @@
             this.btnAdd.TabIndex = 8;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnCommit
             // 
@@ -149,6 +152,7 @@
             this.btnPrint.TabIndex = 11;
             this.btnPrint.Text = "Print";
             this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // btnExit
             // 
@@ -170,6 +174,14 @@
             this.lblError.TabIndex = 13;
             this.lblError.Text = "label1";
             // 
+            // pdlgData
+            // 
+            this.pdlgData.UseEXDialog = true;
+            // 
+            // pdPrint
+            // 
+            this.pdPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.pdPrint_PrintPage);
+            // 
             // NewPayrollData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -181,7 +193,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnCommit);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtHoursWorked);
             this.Controls.Add(this.lblHours);
             this.Controls.Add(this.txtWeekEnding);
             this.Controls.Add(this.lblWeek);
@@ -208,12 +220,14 @@
         private System.Windows.Forms.Label lblWeek;
         private System.Windows.Forms.TextBox txtWeekEnding;
         private System.Windows.Forms.Label lblHours;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtHoursWorked;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnCommit;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnPrint;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.PrintDialog pdlgData;
+        private System.Drawing.Printing.PrintDocument pdPrint;
     }
 }
