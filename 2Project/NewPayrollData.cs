@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace _2Project
 {
@@ -15,7 +17,7 @@ namespace _2Project
         decimal EmpPayRate; // holding the employees payrate 
         decimal wkpay; // for holding the weeks calculated pay
         DataTable dtNewData = null; // creates datatable to populate with calculated weeks pay
-
+        DataSet dsData = null;
         public NewPayrollData()
         {
             InitializeComponent();
@@ -25,6 +27,8 @@ namespace _2Project
         {
             GetEmployees();
             CreateDataTable();
+            cboEmpList.DropDownStyle = ComboBoxStyle.DropDownList;
+
         }
 
         //form closing event
@@ -105,13 +109,16 @@ namespace _2Project
 
         }
 
+
+        //Validating data and add it to the datagrid view
         private void btnAdd_Click(object sender, EventArgs e)
         {
             decimal hrsworked;
             Boolean blnIsOk = true;
+            lblError.Text = "";
 
             hrsworked = 0;
-            if (txtHoursWorked.Text.Trim().Length > 0)
+            if (txtHoursWorked.Text.Trim().Length > 0 && txtWeekEnding.Text.Trim().Length == 8 )
             {
                 try
                 {
@@ -119,6 +126,15 @@ namespace _2Project
                     if (hrsworked > 0 && hrsworked <= 80)
                     {
                         wkpay = hrsworked * EmpPayRate;
+                        try
+                        {
+                            Convert.ToDecimal(txtWeekEnding.Text);
+                        }
+                        catch (Exception ex)
+                        {
+                            lblError.Text = "Please enter a valid date" + ex.Message;
+                            blnIsOk = false;
+                        }
                     }
                     else
                     {
@@ -131,17 +147,17 @@ namespace _2Project
                     lblError.Text = "Please enter a valid number in hours worked" + ex.Message;
                     blnIsOk = false;
                 }
+                
                 if (blnIsOk)
                 {
                     dtNewData.Rows.Add(cboEmpList.Text, txtWeekEnding.Text, txtHoursWorked.Text, (wkpay).ToString("N2"));
-                    cboEmpList.Text = "";
                     txtWeekEnding.Text = "";
                     txtHoursWorked.Text = "";
                 }
             }
             else
             {
-                lblError.Text = "Please enter a number between 1 and 80. in the hours worked.";
+                lblError.Text = "Enter a number 1-80 in hours/ enter a valid date.";
             }
 
 
@@ -159,9 +175,10 @@ namespace _2Project
 
             dtNewData = new DataTable();
             dtNewData.TableName = "NewDataEntry";
-            dtNewData.Columns.Add("Name", typeof(String));
-            dtNewData.Columns.Add("Week Ending", typeof(String));
-            dtNewData.Columns.Add("Hours", typeof(String));
+            dtNewData.Columns.Add("EmpID", typeof(String));
+            dtNewData.Columns.Add("FullName", typeof(String));
+            dtNewData.Columns.Add("WeekEnding", typeof(String));
+            dtNewData.Columns.Add("HoursWorked", typeof(String));
             dtNewData.Columns.Add("Total Pay", typeof(String));
 
             dgvEmpData.DataSource = dtNewData;
@@ -170,6 +187,7 @@ namespace _2Project
             dgvEmpData.AllowUserToAddRows = false;
             dgvEmpData.AllowUserToDeleteRows = false;
             dgvEmpData.AllowUserToOrderColumns = false;
+            dgvEmpData.Columns[0].Width = 75;
             dgvEmpData.Columns[0].Width = 200;
             dgvEmpData.Columns[1].Width = 125;
             dgvEmpData.Columns[2].Width = 125;
@@ -189,24 +207,24 @@ namespace _2Project
             e.Graphics.DrawString("Summary of Pay Entries", fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(250.0), Convert.ToSingle(75.0));
 
             sglYPos = Convert.ToSingle(125);
-            e.Graphics.DrawString("Name", fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(30.0), sglYPos);
-            e.Graphics.DrawString("Week Ending", fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(200.0), sglYPos);
-            e.Graphics.DrawString("Hours", fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(400.0), sglYPos);
+            e.Graphics.DrawString("FullName", fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(30.0), sglYPos);
+            e.Graphics.DrawString("WeekEnding", fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(200.0), sglYPos);
+            e.Graphics.DrawString("HoursWorked", fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(400.0), sglYPos);
             e.Graphics.DrawString("Total Pay", fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(600.0), sglYPos);
             decTotalValue = Convert.ToDecimal(0.0);
             for (intRow = 0; intRow < dtNewData.Rows.Count; intRow++)
             {
                 sglXPos = Convert.ToSingle(30);
                 sglYPos += Convert.ToSingle(fDoc.Height);
-                e.Graphics.DrawString(dtNewData.Rows[intRow]["Name"].ToString(), fDoc, System.Drawing.Brushes.Black, sglXPos, sglYPos);
+                e.Graphics.DrawString(dtNewData.Rows[intRow]["FullName"].ToString(), fDoc, System.Drawing.Brushes.Black, sglXPos, sglYPos);
                 sglXPos = Convert.ToSingle(200);
-                e.Graphics.DrawString(dtNewData.Rows[intRow]["Week Ending"].ToString(), fDoc, System.Drawing.Brushes.Black, sglXPos, sglYPos);
+                e.Graphics.DrawString(dtNewData.Rows[intRow]["WeekEnding"].ToString(), fDoc, System.Drawing.Brushes.Black, sglXPos, sglYPos);
                 sglXPos = Convert.ToSingle(400);
-                e.Graphics.DrawString(dtNewData.Rows[intRow]["Hours"].ToString(), fDoc, System.Drawing.Brushes.Black, sglXPos, sglYPos);
+                e.Graphics.DrawString(dtNewData.Rows[intRow]["HoursWorked"].ToString(), fDoc, System.Drawing.Brushes.Black, sglXPos, sglYPos);
                 sglXPos = Convert.ToSingle(600);
-                e.Graphics.DrawString(dtNewData.Rows[intRow]["Total Pay"].ToString(), fDoc, System.Drawing.Brushes.Black, sglXPos, sglYPos);
+                e.Graphics.DrawString(dtNewData.Rows[intRow]["TotalPay"].ToString(), fDoc, System.Drawing.Brushes.Black, sglXPos, sglYPos);
 
-                decTotalValue += Convert.ToDecimal(dtNewData.Rows[intRow]["Total Pay"]);
+                decTotalValue += Convert.ToDecimal(dtNewData.Rows[intRow]["TotalPay"]);
             }
 
             sglYPos += (Convert.ToSingle(fDoc.Height * 2));
@@ -230,6 +248,35 @@ namespace _2Project
                 pdPrint.Print();
 
                 //**Call EndPrint here to print a summary page.
+            }
+        }
+
+        private void btnCommit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            DialogResult dlgAnswer;
+            DataSet dsXML;
+
+            sfdXML.DefaultExt = "xml";
+            sfdXML.Filter = "XML files (*.xml)|*.xml|All files(*.*)|*.*";
+            sfdXML.InitialDirectory = "C:\\";
+            sfdXML.OverwritePrompt = true;
+            sfdXML.Title = "Save XML File";
+
+            dlgAnswer = sfdXML.ShowDialog();
+            if (dlgAnswer == DialogResult.OK)
+            {
+                dtNewData.WriteXml(sfdXML.FileName);
+
+                //**this is not part of the console app and may cause issues
+                //**Now read back into another dataset
+                dsXML = new DataSet();
+                dsXML.ReadXml(sfdXML.FileName);
+                //dgvEmpData.DataSource = dsXML.Tables[0];
             }
         }
     }

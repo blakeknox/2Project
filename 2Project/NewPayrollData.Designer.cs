@@ -38,12 +38,14 @@
             this.txtHoursWorked = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnCommit = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
             this.pdlgData = new System.Windows.Forms.PrintDialog();
             this.pdPrint = new System.Drawing.Printing.PrintDocument();
+            this.lblDateEx = new System.Windows.Forms.Label();
+            this.sfdXML = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmpData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -134,15 +136,17 @@
             this.btnCommit.TabIndex = 9;
             this.btnCommit.Text = "Commit";
             this.btnCommit.UseVisualStyleBackColor = true;
+            this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
             // 
-            // button1
+            // btnExport
             // 
-            this.button1.Location = new System.Drawing.Point(150, 498);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Export";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnExport.Location = new System.Drawing.Point(150, 498);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(75, 23);
+            this.btnExport.TabIndex = 10;
+            this.btnExport.Text = "Export";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // btnPrint
             // 
@@ -182,15 +186,26 @@
             // 
             this.pdPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.pdPrint_PrintPage);
             // 
+            // lblDateEx
+            // 
+            this.lblDateEx.AutoSize = true;
+            this.lblDateEx.ForeColor = System.Drawing.Color.Blue;
+            this.lblDateEx.Location = new System.Drawing.Point(147, 181);
+            this.lblDateEx.Name = "lblDateEx";
+            this.lblDateEx.Size = new System.Drawing.Size(124, 17);
+            this.lblDateEx.TabIndex = 14;
+            this.lblDateEx.Text = "Date: YYYYMMDD";
+            // 
             // NewPayrollData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(751, 573);
+            this.Controls.Add(this.lblDateEx);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnPrint);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnExport);
             this.Controls.Add(this.btnCommit);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.txtHoursWorked);
@@ -223,11 +238,13 @@
         private System.Windows.Forms.TextBox txtHoursWorked;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnCommit;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Button btnPrint;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.PrintDialog pdlgData;
         private System.Drawing.Printing.PrintDocument pdPrint;
+        private System.Windows.Forms.Label lblDateEx;
+        private System.Windows.Forms.SaveFileDialog sfdXML;
     }
 }
