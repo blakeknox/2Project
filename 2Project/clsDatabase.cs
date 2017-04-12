@@ -385,18 +385,6 @@ namespace _2Project
                         cnSQL.Close();
                         cnSQL.Dispose();
                     }
-
-                    if (!blnErrorOccurred)
-                    {
-                        if (cmdSQL.Parameters["@Payrate"].Value == DBNull.Value)
-                        {
-                            blnErrorOccurred = true;
-                        }
-                        else
-                        {
-                            decPay = Convert.ToDecimal(cmdSQL.Parameters["@Payrate"].Value);
-                        }
-                    }
                     cmdSQL.Parameters.Clear();
                     cmdSQL.Dispose();
                 }

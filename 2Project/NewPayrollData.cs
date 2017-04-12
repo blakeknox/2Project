@@ -32,6 +32,7 @@ namespace _2Project
             CreateDataTable();
             btnExport.Enabled = false;
             btnPrint.Enabled = false;
+            btnCommit.Enabled = false;
             cboEmpList.DropDownStyle = ComboBoxStyle.DropDownList;
 
         }
@@ -160,6 +161,7 @@ namespace _2Project
                     }
                     btnPrint.Enabled = true;
                     btnExport.Enabled = true;
+                    btnCommit.Enabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -250,7 +252,7 @@ namespace _2Project
 
             sglYPos += (Convert.ToSingle(fDoc.Height * 2));
             e.Graphics.DrawString("Total Value: " + decTotalValue.ToString("c"), fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(50.0), sglYPos);
-            e.Graphics.DrawString("Total Rows Printed: " + dtNewData.Rows.Count.ToString(), fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(50.0), sglYPos);
+            e.Graphics.DrawString("Total Records Printed: " + dtNewData.Rows.Count.ToString(), fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(50.0), sglYPos);
         }
 
         private void btnPrint_Click(object sender, EventArgs e)
@@ -283,6 +285,7 @@ namespace _2Project
             {
                 clsDatabase.InsertPayroll(Convert.ToInt32(dtNewData.Rows[intIndx]["EmpID"]), Convert.ToString(dtNewData.Rows[intIndx]["WeekEnding"]), Convert.ToDecimal(dtNewData.Rows[intIndx]["HoursWorked"]));
             }
+            btnCommit.Enabled = false;
 
         }
 
@@ -306,7 +309,7 @@ namespace _2Project
                 //**Now read back into another dataset
                 dsXML = new DataSet();
                 dsXML.ReadXml(sfdXML.FileName);
-                //dgvEmpData.DataSource = dsXML.Tables[0];
+                //dtNewData.DataSource = dsXML.Tables[0];
             }
         }
     }
