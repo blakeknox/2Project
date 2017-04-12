@@ -252,6 +252,7 @@ namespace _2Project
 
             sglYPos += (Convert.ToSingle(fDoc.Height * 2));
             e.Graphics.DrawString("Total Value: " + decTotalValue.ToString("c"), fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(50.0), sglYPos);
+            sglYPos += Convert.ToSingle(fDoc.Height);
             e.Graphics.DrawString("Total Records Printed: " + dtNewData.Rows.Count.ToString(), fDoc, System.Drawing.Brushes.Black, Convert.ToSingle(50.0), sglYPos);
         }
 
